@@ -1,26 +1,24 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model PokemonTeam {
-  id          Int      @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   name        String
   description String?
   pokemons    TeamPokemon[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 }
 
 model TeamPokemon {
-  id          Int      @id @default(autoincrement())
+  id          Int          @id @default(autoincrement())
   pokemonName String
-  team        PokemonTeam @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  team        PokemonTeam  @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId      Int
 }

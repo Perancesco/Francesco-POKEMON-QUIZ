@@ -58,8 +58,10 @@ export default function TeamDetail() {
       }
       setPokemonName('');
       toast.success('Pokémon added successfully!', { id: toastId });
-    } catch (error: any) {
-      toast.error(error.message, { id: toastId });
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : 'Failed to add Pokémon.';
+      toast.error(message, { id: toastId });
     }
   };
 
@@ -73,11 +75,16 @@ export default function TeamDetail() {
         throw new Error('Failed to remove Pokémon');
       }
       if (team) {
-        setTeam({ ...team, pokemons: team.pokemons.filter((p) => p.id !== pokemonId) });
+        setTeam({
+          ...team,
+          pokemons: team.pokemons.filter((p) => p.id !== pokemonId),
+        });
       }
       toast.success('Pokémon removed successfully!', { id: toastId });
-    } catch (error) {
-      toast.error('Failed to remove Pokémon.', { id: toastId });
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : 'Failed to remove Pokémon.';
+      toast.error(message, { id: toastId });
     }
   };
 
@@ -111,7 +118,9 @@ export default function TeamDetail() {
                     onChange={(e) => setPokemonName(e.target.value)}
                     required
                   />
-                  <button type="submit" className="btn btn-primary">Add</button>
+                  <button type="submit" className="btn btn-primary">
+                    Add
+                  </button>
                 </div>
               </form>
             </div>
@@ -119,9 +128,17 @@ export default function TeamDetail() {
               <h5>Current Team</h5>
               <ul className="list-group">
                 {team.pokemons.map((p) => (
-                  <li key={p.id} className="list-group-item d-flex justify-content-between align-items-center text-capitalize">
+                  <li
+                    key={p.id}
+                    className="list-group-item d-flex justify-content-between align-items-center text-capitalize"
+                  >
                     {p.pokemonName}
-                    <button onClick={() => handleRemovePokemon(p.id)} className="btn btn-danger btn-sm">Remove</button>
+                    <button
+                      onClick={() => handleRemovePokemon(p.id)}
+                      className="btn btn-danger btn-sm"
+                    >
+                      Remove
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -129,7 +146,9 @@ export default function TeamDetail() {
           </div>
         </div>
         <div className="card-footer">
-          <Link href="/teams" className="btn btn-secondary">Back to Teams List</Link>
+          <Link href="/teams" className="btn btn-secondary">
+            Back to Teams List
+          </Link>
         </div>
       </div>
     </div>

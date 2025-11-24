@@ -43,15 +43,19 @@ export default function Teams() {
         body: JSON.stringify({ name, description }),
       });
       if (!res.ok) {
-        throw new Error('Failed to create team');
+        const data = await res.json().catch(() => null);
+        console.error('Create team error:', data);
+        throw new Error(data?.error || 'Failed to create team');
       }
       const newTeam = await res.json();
       setTeams([...teams, { ...newTeam, pokemons: [] }]);
       setName('');
       setDescription('');
       toast.success('Team created successfully!', { id: toastId });
-    } catch (error) {
-      toast.error('Failed to create team.', { id: toastId });
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : 'Failed to create team.';
+      toast.error(message, { id: toastId });
     }
   };
 
@@ -66,8 +70,10 @@ export default function Teams() {
       }
       setTeams(teams.filter((team) => team.id !== id));
       toast.success('Team deleted successfully!', { id: toastId });
-    } catch (error) {
-      toast.error('Failed to delete team.', { id: toastId });
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : 'Failed to delete team.';
+      toast.error(message, { id: toastId });
     }
   };
 
