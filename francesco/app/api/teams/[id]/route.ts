@@ -3,12 +3,13 @@ import { NextResponse } from 'next/server'
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const id = parseInt(params.id, 10)
+  const { id } = await params
+  const teamId = parseInt(id, 10)
 
   const team = await prisma.pokemonTeam.findUnique({
-    where: { id },
+    where: { id: teamId },
     include: {
       pokemons: true,
     },
@@ -23,13 +24,14 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const id = parseInt(params.id, 10)
+  const { id } = await params
+  const teamId = parseInt(id, 10)
   const { name, description } = await request.json()
 
   const updatedTeam = await prisma.pokemonTeam.update({
-    where: { id },
+    where: { id: teamId },
     data: { name, description },
   })
 
@@ -38,12 +40,13 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const id = parseInt(params.id, 10)
+  const { id } = await params
+  const teamId = parseInt(id, 10)
 
   await prisma.pokemonTeam.delete({
-    where: { id },
+    where: { id: teamId },
   })
 
   return new Response(null, { status: 204 })

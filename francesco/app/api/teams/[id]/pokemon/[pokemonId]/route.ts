@@ -2,13 +2,14 @@ import prisma from '@/app/lib/prisma'
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string; pokemonId: string } },
+  { params }: { params: Promise<{ id: string; pokemonId: string }> },
 ) {
-  const pokemonId = parseInt(params.pokemonId, 10)
+  const { pokemonId } = await params
+  const pId = parseInt(pokemonId, 10)
 
   await prisma.teamPokemon.delete({
     where: {
-      id: pokemonId,
+      id: pId,
     },
   })
 
