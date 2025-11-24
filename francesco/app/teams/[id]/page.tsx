@@ -104,7 +104,7 @@ export default function TeamDetail() {
         <div className="card-body">
           <p>{team.description}</p>
           <hr />
-          <h4>Manage Pokémon</h4>
+          <h4>Edit Pokémon</h4>
           <div className="row">
             <div className="col-md-6">
               <h5>Add Pokémon to Team</h5>

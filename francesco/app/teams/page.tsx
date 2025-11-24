@@ -128,7 +128,7 @@ export default function Teams() {
                     </ul>
                     <div className="mt-auto">
                       <Link href={`/teams/${team.id}`} className="btn btn-primary me-2">
-                        Manage
+                        Edit
                       </Link>
                       <button onClick={() => handleDelete(team.id)} className="btn btn-danger">
                         Delete
